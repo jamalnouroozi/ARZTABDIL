@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مبدل ارز</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#dde0e4;--card:#f6f7f9;--panel:#eceef1;--ink:#1c232a;--muted:#6b747d;--line:#cfd3d8;--navy:linear-gradient(135deg,#dfe3e7,#b3b9c1);--navy-ink:#1c232a;--navy-muted:#515b65;--accent:#5f6a75;--swap-ink:#fff;--shadow:0 20px 50px -20px rgba(28,35,42,.35);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#111315;--card:#1b1e22;--panel:#15181b;--ink:#e9ecef;--muted:#8d949c;--line:#2c3136;--navy:linear-gradient(135deg,#cfd4da,#9ca4ad);--navy-ink:#14181c;--navy-muted:#454d55;--accent:#c4cbd3;--swap-ink:#14181c;--shadow:0 20px 50px -20px rgba(0,0,0,.7)}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#111315;--card:#1b1e22;--panel:#15181b;--ink:#e9ecef;--muted:#8d949c;--line:#2c3136;--navy:linear-gradient(135deg,#cfd4da,#9ca4ad);--navy-ink:#14181c;--navy-muted:#454d55;--accent:#c4cbd3;--swap-ink:#14181c;--shadow:0 20px 50px -20px rgba(0,0,0,.7)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,"Segoe UI",sans-serif;line-height:1.6;display:flex;justify-content:center;align-items:flex-start;padding:32px 16px}
+main{width:100%;max-width:480px}
+header{margin:0 4px 18px}
+h1{font-size:1.7rem;font-weight:800;margin:0}
+header p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border-radius:24px;padding:12px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.panel{border-radius:16px;padding:14px 16px 16px;background:var(--panel);border:1px solid var(--line)}
+.panel.out{background:var(--navy);color:var(--navy-ink);border-color:transparent}
+.lab{font-size:.82rem;color:var(--muted);margin-bottom:6px;display:block}
+.out .lab{color:var(--navy-muted)}
+.line{display:flex;align-items:center;gap:12px}
+.pick{position:relative;flex:0 0 auto}
+.pick .flag{position:absolute;inset-inline-start:10px;top:50%;transform:translateY(-50%);font-size:1.3rem;pointer-events:none}
+select{appearance:none;-webkit-appearance:none;font:inherit;font-weight:600;font-size:.95rem;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 40px 9px 14px;max-width:190px;cursor:pointer}
+.out select{background:rgba(255,255,255,.5);color:var(--navy-ink);border-color:rgba(255,255,255,.7)}
+.out select option{color:#0d2538;background:#fff}
+@media (prefers-color-scheme:dark){.out select{background:rgba(255,255,255,.35);border-color:rgba(255,255,255,.5)}}
+input{flex:1;min-width:0;font:inherit;font-size:1.9rem;font-weight:800;color:var(--ink);background:transparent;border:0;padding:0;direction:ltr;text-align:left}
+input:focus{outline:none}
+.panel:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.res{flex:1;min-width:0;font-size:1.9rem;font-weight:800;direction:ltr;text-align:left;overflow-wrap:anywhere;line-height:1.3}
+.swapwrap{display:flex;justify-content:center;height:0;position:relative;z-index:2}
+.swap{position:relative;top:-20px;width:42px;height:42px;border-radius:50%;border:4px solid var(--card);background:var(--accent);color:var(--swap-ink);font-size:1.1rem;cursor:pointer;display:grid;place-items:center;transition:transform .25s}
+.swap:hover{transform:rotate(180deg)}
+.gap{height:10px}
+.rate{margin:14px 6px 4px;display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--muted);flex-wrap:wrap}
+.rate b{color:var(--ink);direction:ltr;unicode-bidi:embed}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 4px 0}
+.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 14px;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.note{color:var(--muted);font-size:.78rem;margin:18px 6px 0}
+@media (max-width:380px){.line{flex-direction:column;align-items:stretch}.res,input{font-size:1.6rem}select{max-width:none;width:100%}.pick{width:100%}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>مبدل ارز</h1><p>مبلغ را بنویسید، ارزها را انتخاب کنید.</p></header>
+<div class="card">
+  <div class="panel">
+    <label class="lab" for="amt">مبلغ</label>
+    <div class="line">
+      <div class="pick"><span class="flag" id="ff"></span><select id="from" aria-label="ارز مبدأ"></select></div>
+      <input id="amt" type="text" inputmode="decimal" value="100" autocomplete="off">
+    </div>
+  </div>
+  <div class="swapwrap"><button class="swap" id="swap" type="button" aria-label="جابه‌جایی ارزها">⇅</button></div>
+  <div class="gap"></div>
+  <div class="panel out">
+    <span class="lab">معادل</span>
+    <div class="line">
+      <div class="pick"><span class="flag" id="tf"></span><select id="to" aria-label="ارز مقصد"></select></div>
+      <div class="res" id="res" aria-live="polite">—</div>
+    </div>
+  </div>
+  <div class="rate"><span>نرخ</span><b id="rate"></b></div>
+  <div class="chips" id="chips"></div>
+</div>
+<p class="note">نرخ‌ها تقریبی و مربوط به نوامبر ۲۰۲۶ هستند. ریال بازار آزاد حدود ۲٫۶۸ تا ۲٫۷۱ میلیون ریال به ازای هر دلار (۱۷ نوامبر) و نرخ رسمی بانک مرکزی حدود ۱٫۸۸ میلیون ریال (۲ نوامبر) است؛ درهم و ریال عربستان و قطر به دلار ثابت‌اند. نرخ روپیه هند و روبل با اطمینان کمتری برآورد شده است. برای معامله واقعی، نرخ لحظه‌ای بانک یا صرافی را ببینید.</p>
+</main>
+<script>
+// [کد، نام، واحد به ازای ۱ دلار، پرچم]
+var R=[["USD","دلار آمریکا",1,"🇺🇸"],["EUR","یورو",0.9048,"🇪🇺"],["GBP","پوند بریتانیا",0.7561,"🇬🇧"],["IRR","ریال ایران (بازار آزاد)",2695000,"🇮🇷"],["IRR-CBI","ریال ایران (نرخ رسمی بانک مرکزی)",1879158,"🇮🇷"],["AED","درهم امارات",3.6725,"🇦🇪"],["SAR","ریال عربستان",3.75,"🇸🇦"],["QAR","ریال قطر",3.64,"🇶🇦"],["TRY","لیر ترکیه",50.37,"🇹🇷"],["INR","روپیه هند",96,"🇮🇳"],["PKR","روپیه پاکستان",278.5,"🇵🇰"],["RUB","روبل روسیه",83,"🇷🇺"],["CNY","یوان چین",6.669,"🇨🇳"],["JPY","ین ژاپن",160,"🇯🇵"],["KRW","وون کره جنوبی",1337.2,"🇰🇷"],["HKD","دلار هنگ‌کنگ",7.846,"🇭🇰"],["SGD","دلار سنگاپور",1.288,"🇸🇬"],["CHF","فرانک سوئیس",0.8384,"🇨🇭"],["SEK","کرون سوئد",10.05,"🇸🇪"],["NOK","کرون نروژ",9.56,"🇳🇴"],["PLN","زلوتی لهستان",3.99,"🇵🇱"],["ILS","شکل اسرائیل",3.21,"🇮🇱"],["ZAR","رند آفریقای جنوبی",16.96,"🇿🇦"],["CAD","دلار کانادا",1.4258,"🇨🇦"],["AUD","دلار استرالیا",1.4738,"🇦🇺"],["NZD","دلار نیوزیلند",1.808,"🇳🇿"]];
+var $=function(i){return document.getElementById(i)};
+var f=$("from"),t=$("to"),a=$("amt");
+function get(c){return R.filter(function(r){return r[0]===c})[0]}
+function lab(c){return c==="IRR-CBI"?"IRR":c}
+R.forEach(function(r){[f,t].forEach(function(s){var o=document.createElement("option");o.value=r[0];o.textContent=r[1]+" ("+lab(r[0])+")";s.appendChild(o)})});
+f.value="USD";t.value="IRR";
+function fmt(n){return n.toLocaleString("en-US",{maximumFractionDigits:n<1?6:2})}
+function num(s){
+  s=String(s).replace(/[۰-۹]/g,function(d){return "۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[٬,\s]/g,"").replace("٫",".");
+  return parseFloat(s);
+}
+function calc(){
+  var v=num(a.value),k=get(t.value)[2]/get(f.value)[2];
+  $("ff").textContent=get(f.value)[3];$("tf").textContent=get(t.value)[3];
+  $("res").textContent=isNaN(v)||v<0?"—":fmt(v*k)+" "+lab(t.value);
+  $("rate").textContent="1 "+lab(f.value)+" = "+fmt(k)+" "+lab(t.value);
+}
+$("swap").onclick=function(){var x=f.value;f.value=t.value;t.value=x;calc()};
+[a,f,t].forEach(function(e){e.addEventListener("input",calc)});
+[1,10,100,1000,1000000].forEach(function(n){
+  var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=n.toLocaleString("en-US");
+  b.onclick=function(){a.value=n;calc()};$("chips").appendChild(b);
+});
+calc();
+</script>
+</body>
+</html>
